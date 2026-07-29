@@ -3,9 +3,9 @@
 	import { load_citations } from '$lib/utils';
 
 	let { data } = $props();
-	let page = $state(data.page);
-	let citations = $state(data.citations);
-	let hasMore = $state(data.citations.length > 0);
+	let page = $derived(data.page);
+	let citations = $derived(data.citations);
+	let hasMore = $derived(data.citations.length > 0);
 
 	let authorInput = $state('');
 	let sourceInput = $state('');
@@ -43,13 +43,13 @@
 			type="text"
 			placeholder="Filter by author"
 			bind:value={authorInput}
-			class="bg-neutral-800 border border-white/20 px-3 py-2 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-white/50"
+			class="bg-neutral-800 border border-white/20 px-3 py-2 text-sm text-white focus:outline-none"
 		/>
 		<input
 			type="text"
 			placeholder="Filter by source"
 			bind:value={sourceInput}
-			class="bg-neutral-800 border border-white/20 px-3 py-2 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-white/50"
+			class="bg-neutral-800 border border-white/20 px-3 py-2 text-sm text-white focus:outline-none"
 		/>
 		<button
 			onclick={search}
