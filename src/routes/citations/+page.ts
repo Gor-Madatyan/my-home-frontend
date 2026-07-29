@@ -2,7 +2,7 @@ import axios from 'axios';
 
 export async function load() {
 	try {
-		const response = await axios.get('http://localhost:8080/citations');
+		const response = await axios.get('http://localhost:8080/citations?page_size=10&page=0');
 		const data = response.data;
 		const citations = (data.citations || []).map((item: { citation_id: number; author: string; rizz: number; source: string; body: string }) => ({
 			citation_id: item.citation_id,
