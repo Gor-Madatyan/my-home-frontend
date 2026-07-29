@@ -13,6 +13,7 @@
 	}
 	export const myAge = calculateAge(new Date(2009, 6, 7));
 	export const mySecondAge = calculateAge(new Date(2021, 6, 7));
+	export const userGithub = "Gor-Madatyan"
 </script>
 <script>
 	import {resolve} from "$app/paths";
