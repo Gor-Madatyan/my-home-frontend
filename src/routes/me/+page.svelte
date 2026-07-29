@@ -39,9 +39,9 @@
 	<section aria-labelledby="contacts-heading">
 		<h3 id="contacts-heading" class="text-xl font-bold border-b border-white pb-1 mb-4">Contacts</h3>
 		<ul class="space-y-2 text-lg">
-			<li><a href="https://t.me/gormadatyan09" class="hover:underline">Telegram</a></li>
-			<li><a href="https://www.instagram.com/gor_madatyan07/" class="hover:underline">Instagram</a></li>
-			<li><a href="https://github.com/Gor-Madatyan" class="hover:underline">GitHub</a></li>
+			<li><a target="_blank" href="https://t.me/gormadatyan09" class="hover:underline">Telegram</a></li>
+			<li><a target="_blank" href="https://www.instagram.com/gor_madatyan07/" class="hover:underline">Instagram</a></li>
+			<li><a target="_blank" href="https://github.com/Gor-Madatyan" class="hover:underline">GitHub</a></li>
 		</ul>
 	</section>
 </div>

@@ -37,10 +37,12 @@
 
 		<!-- Invitation section (no title) -->
 		<section class="mb-8">
-			Soooo, you can go explore all my posts, <a href={resolve("/posts")} class="hover:underline text-blue-400">Posts</a> OR
-			Go view some citations from different books I liked in some point of my life <a href={resolve("/citations")} class="hover:underline text-blue-400">Citations</a>
+			Soooo, you can go explore all my posts, <a href={resolve("/posts")} class="hover:underline text-blue-400">Posts</a>, OR
+			Go view some citations from different books I liked in some point of my life, <a href={resolve("/citations")} class="hover:underline text-blue-400">Citations</a>
 			<br/><br/>
-			<a href={resolve("/portfolio")} class="hover:underline text-blue-400">My Portfolio</a>—if you are interested in my projects
+			<a href={resolve("/portfolio")} class="hover:underline text-blue-400">My Portfolio</a>—if you are interested in my projects<br/>
+			<a href={resolve("/toolchain")} class="hover:underline text-blue-400">Tools used for this site</a>—if you are curious to know what stack is used for this project
+
 		</section>
 	</main>
 
