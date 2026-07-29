@@ -3,8 +3,11 @@
   let { name, note, id }: {name:string, note:string, id:number} = $props();
 </script>
 
-<div
-  class="bg-gray-950 border border-gray-800 rounded p-4 font-mono text-gray-200 max-w-sm"
+<a
+  href={`https://github.com/${userGithub}/${name}`}
+  target="_blank"
+  rel="noopener noreferrer"
+  class="bg-gray-950 border border-gray-800 rounded p-4 font-mono text-gray-200 max-w-sm block"
 >
   <img
     src="https://opengraph.githubassets.com/{id}/{userGithub}/{name}"
@@ -14,4 +17,4 @@
   {#if note}
     <p class="mt-2 text-sm">{note}</p>
   {/if}
-</div>
+</a>
