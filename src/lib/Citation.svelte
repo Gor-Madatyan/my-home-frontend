@@ -18,6 +18,6 @@
       <span class="ml-2 text-sm text-gray-400">— {citation.source}</span>
     </div>
   </div>
-  <p class="text-white/90">{citation.body}</p>
-  <span class="absolute top-1 right-1 text-xs bg-white/10 px-2 py-0.5">rizz: {citation.rizz}</span>
+  <p class="text-white/90 pr-12">{citation.body}</p>
+  <span class="absolute top-2 right-2 text-xs bg-white/10 px-2 py-0.5">rizz: {citation.rizz}</span>
 </div>
