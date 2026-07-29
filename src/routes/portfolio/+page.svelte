@@ -3,7 +3,7 @@
 
     interface Props {
         data: {
-            projects?: Array<{ name: string; note: string, id:number }>;
+            projects?: Array<{ project_name: string; note: string; project_id: number }>;
         };
     }
 
@@ -17,8 +17,8 @@
     <p class="mb-8 text-gray-400 italic">These are the most important projects of mine, this page will motivate me to do even more cool stuff 😏</p>
 
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {#each projects as project (project.id)}
-            <PortfolioProject name={project.name} note={project.note} id = {project.id}/>
+        {#each projects as project (project.project_id)}
+            <PortfolioProject project_name={project.project_name} note={project.note} project_id={project.project_id} />
         {/each}
     </div>
 </div>

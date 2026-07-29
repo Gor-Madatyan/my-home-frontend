@@ -1,17 +1,17 @@
 <script lang="ts">
   import { userGithub } from "../routes/+page.svelte"
-  let { name, note, id }: {name:string, note:string, id:number} = $props();
+  let { project_name, note, project_id }: {project_name:string, note:string, project_id:number} = $props();
 </script>
 
 <a
-  href={`https://github.com/${userGithub}/${name}`}
+  href={`https://github.com/${userGithub}/${project_name}`}
   target="_blank"
   rel="noopener noreferrer"
   class="bg-gray-950 border border-gray-800 rounded p-4 font-mono text-gray-200 max-w-sm block"
 >
   <img
-    src="https://opengraph.githubassets.com/{id}/{userGithub}/{name}"
-    alt={name}
+    src="https://opengraph.githubassets.com/{project_id}/{userGithub}/{project_name}"
+    alt={project_name}
     class="w-full border border-gray-800 rounded"
   />
   {#if note}
