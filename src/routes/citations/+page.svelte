@@ -3,9 +3,9 @@
 	import { load_citations } from '$lib/utils';
 
 	let { data } = $props();
-	let page = $state(data.page);
-	let citations = $state(data.citations);
-	let hasMore = $state(data.citations.length > 0);
+	let page = $derived(data.page);
+	let citations = $derived(data.citations);
+	let hasMore = $derived(data.citations.length > 0);
 
 	async function loadMore() {
 		const nextPage = page + 1;
@@ -24,7 +24,7 @@
 
 	<!-- Placeholder note -->
 	<div class="border border-white/20 p-4 mb-8 text-sm text-gray-400">
-		Note: I will add a personal note here later.
+		Here are some citations which I want to store so I can keep them somewhere grouped.
 	</div>
 
 	<!-- Citations grid -->

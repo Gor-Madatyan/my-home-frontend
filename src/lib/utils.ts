@@ -1,8 +1,10 @@
 import axios from 'axios';
 
-export async function load_citations(page: number) {
+export async function load_citations(page: number,author?:string, source?:string) {
 	try {
-		const response = await axios.get(`http://localhost:8080/citations?page_size=10&page=${page}`);
+		const response = await axios.get(
+			`http://localhost:8080/citations?page_size=10&page=${page}${author? `&author=${author}` : ''}${author? `&source=${source}` : ''}`
+		);
 		const data = response.data;
 		const citations = (data.citations || []).map(
 			(item: {
