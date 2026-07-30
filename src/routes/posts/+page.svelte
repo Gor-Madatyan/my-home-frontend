@@ -105,7 +105,9 @@
     <!-- Posts grid -->
     <div class="grid grid-cols-1 gap-4">
         {#each posts as post (post.post_id)}
-            <BlogPostCard {post} />
+            <a href="/posts/{post.post_id}" class="block no-underline">
+                <BlogPostCard {post} />
+            </a>
         {/each}
     </div>
 
