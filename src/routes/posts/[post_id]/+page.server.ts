@@ -1,16 +1,18 @@
 import axios from 'axios';
-import type {Actions, ServerLoadEvent } from '@sveltejs/kit';
-import { json } from '@sveltejs/kit';
+import type { Actions, ServerLoadEvent } from '@sveltejs/kit';
+
+function getLikedPosts(cookies: import('@sveltejs/kit').Cookies): string[] {
+	const cookie = cookies.get('likedPosts') ?? '[]';
+	try {
+		return JSON.parse(cookie);
+	} catch {
+		return [];
+	}
+}
 
 export async function load({ params, cookies }: ServerLoadEvent) {
 	const postId = params.post_id!;
-	const likedPostsCookie = cookies.get('likedPosts') ?? '[]';
-	let likedPosts: string[];
-	try {
-		likedPosts = JSON.parse(likedPostsCookie);
-	} catch {
-		likedPosts = [];
-	}
+	const likedPosts = getLikedPosts(cookies);
 	const isLiked = likedPosts.includes(postId);
 
 	try {
@@ -39,23 +41,16 @@ export const actions: Actions = {
 		if (!postId) {
 			return { success: false, error: 'Missing post ID' };
 		}
-		const likedPostsCookie = cookies.get('likedPosts') ?? '[]';
-		let likedPosts: string[];
-		try {
-			likedPosts = JSON.parse(likedPostsCookie);
-		} catch {
-			likedPosts = [];
-		}
+		const likedPosts = getLikedPosts(cookies);
 		if (likedPosts.includes(postId)) {
 			// unlike
-			likedPosts = likedPosts.filter(id => id !== postId);
+			likedPosts.splice(likedPosts.indexOf(postId), 1);
 		} else {
 			// like
 			likedPosts.push(postId);
 		}
 		cookies.set('likedPosts', JSON.stringify(likedPosts), {
 			path: '/',
-			
 		});
 		return { success: true };
 	}
