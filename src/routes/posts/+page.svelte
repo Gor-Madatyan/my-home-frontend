@@ -1,6 +1,7 @@
 <script lang="ts">
     import BlogPostCard from '$lib/assets/BlogPostCard.svelte';
     import axios from 'axios';
+    import {resolve} from "$app/paths";
 
     interface BlogPost {
         post_id: number;
@@ -105,7 +106,7 @@
     <!-- Posts grid -->
     <div class="grid grid-cols-1 gap-4">
         {#each posts as post (post.post_id)}
-            <a href="/posts/{post.post_id}" class="block no-underline">
+            <a href={resolve(`/posts/${post.post_id}`)} class="block no-underline">
                 <BlogPostCard {post} />
             </a>
         {/each}
