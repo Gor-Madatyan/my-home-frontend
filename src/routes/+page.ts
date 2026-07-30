@@ -1,8 +1,9 @@
 import axios from 'axios';
+import { api_base_url } from '$lib/utils';
 
 export async function load() {
 	try {
-		const response = await axios.get('http://localhost:8080/posts?page_size=5&page=0');
+		const response = await axios.get(`${api_base_url}/posts?page_size=5&page=0`);
 		const data = response.data;
 		const posts = (data.posts || []).map(
 			(item: {

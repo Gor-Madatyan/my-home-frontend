@@ -1,11 +1,11 @@
 import axios from 'axios';
 
-export const api_base_url = "localhost:8080"
+export const api_base_url = "http://localhost:8080";
 
 export async function load_citations(page: number,author?:string, source?:string) {
 	try {
 		const response = await axios.get(
-			`http://localhost:8080/citations?page_size=10&page=${page}${author? `&author=${author}` : ''}${source? `&source=${source}` : ''}`
+			`${api_base_url}/citations?page_size=10&page=${page}${author? `&author=${author}` : ''}${source? `&source=${source}` : ''}`
 		);
 		const data = response.data;
 		const citations = (data.citations || []).map(

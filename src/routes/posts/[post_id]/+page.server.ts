@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { api_base_url } from '$lib/utils';
 import type { ServerLoadEvent, Cookies, RequestEvent } from '@sveltejs/kit';
 
 // Helper to get unique liked posts as a Set, automatically stripping data duplicates
@@ -26,7 +27,7 @@ export async function load({ params, cookies }: ServerLoadEvent) {
 	const isLiked = likedPosts.has(postId);
 
 	try {
-		const response = await axios.get(`http://localhost:8080/posts/${postId}`);
+		const response = await axios.get(`${api_base_url}/posts/${postId}`);
 		const data = response.data?.post ?? {};
 
 		const post = {
@@ -59,8 +60,8 @@ export const actions = {
 
 		try {
 			const endpoint = currentlyLiked
-				? `http://localhost:8080/posts/${postId}/unlike`
-				: `http://localhost:8080/posts/${postId}/like`;
+				? `${api_base_url}/posts/${postId}/unlike`
+				: `${api_base_url}/posts/${postId}/like`;
 
 			// Update cookie based on server response (or toggle as before)
 			if (currentlyLiked) {
