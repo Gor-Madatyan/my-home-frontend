@@ -1,4 +1,6 @@
 <script lang="ts">
+	import axios from 'axios';
+
 	interface Post {
 		post_id: number;
 		title: string;
@@ -12,8 +14,21 @@
 
 	let { data }: { data: { post: Post | null } } = $props();
 
+	// local state for likes so we can update it without mutating props
+	let likes = $state(data.post?.likes ?? 0);
+
 	function formatDate(dateString: string): string {
 		return dateString.split(' ')[0];
+	}
+
+	async function handleLike() {
+		if (!data.post) return;
+		try {
+			await axios.put(`http://localhost:8080/posts/${data.post.post_id}/like`);
+			likes += 1;
+		} catch (e) {
+			console.error('Failed to like post:', e);
+		}
 	}
 </script>
 
@@ -24,7 +39,13 @@
 			<div class="flex items-center text-sm text-gray-400 mb-6">
 				<span>Uploaded: {formatDate(data.post.upload_date)}</span>
 				<span class="ml-4">Revised: {formatDate(data.post.revision_date)}</span>
-				<span class="ml-4">{data.post.likes} likes</span>
+				<button
+					class="ml-4 flex items-center gap-1 text-sm hover:text-red-400 transition-colors"
+					onclick={handleLike}
+				>
+					❤️
+					<span>{likes}</span>
+				</button>
 			</div>
 			{#if data.post.tags.length}
 				<div class="flex flex-wrap gap-2 mb-6">
