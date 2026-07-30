@@ -1,33 +1,44 @@
 import axios from 'axios';
-import type { Actions, ServerLoadEvent } from '@sveltejs/kit';
+import type { ServerLoadEvent, Cookies, RequestEvent } from '@sveltejs/kit';
 
-function getLikedPosts(cookies: import('@sveltejs/kit').Cookies): string[] {
+// Helper to get unique liked posts as a Set, automatically stripping data duplicates
+function getLikedPosts(cookies: Cookies): Set<string> {
 	const cookie = cookies.get('likedPosts') ?? '[]';
 	try {
-		return JSON.parse(cookie);
+		const parsed = JSON.parse(cookie);
+		return new Set(Array.isArray(parsed) ? parsed : []);
 	} catch {
-		return [];
+		return new Set();
 	}
+}
+
+// Helper to save liked posts back to cookies
+function saveLikedPosts(cookies: Cookies, likedPosts: Set<string>): void {
+	cookies.set('likedPosts', JSON.stringify([...likedPosts]), {
+		path: '/posts'
+	});
 }
 
 export async function load({ params, cookies }: ServerLoadEvent) {
 	const postId = params.post_id!;
 	const likedPosts = getLikedPosts(cookies);
-	const isLiked = likedPosts.includes(postId);
+	const isLiked = likedPosts.has(postId);
 
 	try {
 		const response = await axios.get(`http://localhost:8080/posts/${postId}`);
-		const data = response.data;
+		const data = response.data?.post ?? {};
+
 		const post = {
-			post_id: data.post?.post_id ?? 0,
-			title: data.post?.title ?? '',
-			summary: data.post?.summary ?? '',
-			upload_date: data.post?.upload_date ?? '',
-			revision_date: data.post?.revision_date ?? '',
-			body: data.post?.body ?? '',
-			tags: data.post?.tags ?? [],
-			likes: data.post?.likes ?? 0
+			post_id: data.post_id ?? 0,
+			title: data.title ?? '',
+			summary: data.summary ?? '',
+			upload_date: data.upload_date ?? '',
+			revision_date: data.revision_date ?? '',
+			body: data.body ?? '',
+			tags: data.tags ?? [],
+			likes: data.likes ?? 0
 		};
+
 		return { post, isLiked };
 	} catch (error) {
 		console.error('Failed to fetch post:', error);
@@ -35,23 +46,23 @@ export async function load({ params, cookies }: ServerLoadEvent) {
 	}
 }
 
-export const actions: Actions = {
-	toggleLike: async ({ params, cookies }) => {
+export const actions = {
+	toggleLike: async ({ params, cookies }: RequestEvent) => {
 		const postId = params.post_id;
 		if (!postId) {
 			return { success: false, error: 'Missing post ID' };
 		}
+
 		const likedPosts = getLikedPosts(cookies);
-		if (likedPosts.includes(postId)) {
-			// unlike
-			likedPosts.splice(likedPosts.indexOf(postId), 1);
+
+		// Set.delete() and Set.add() inherently prevent structural duplicates
+		if (likedPosts.has(postId)) {
+			likedPosts.delete(postId);
 		} else {
-			// like
-			likedPosts.push(postId);
+			likedPosts.add(postId);
 		}
-		cookies.set('likedPosts', JSON.stringify(likedPosts), {
-			path: '/',
-		});
+
+		saveLikedPosts(cookies, likedPosts);
 		return { success: true };
 	}
 };
