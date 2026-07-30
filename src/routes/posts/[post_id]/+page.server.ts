@@ -1,11 +1,11 @@
 import axios from 'axios';
-import type { LoadEvent, Actions } from '@sveltejs/kit';
+import type {Actions, ServerLoadEvent } from '@sveltejs/kit';
 import { json } from '@sveltejs/kit';
 
-export async function load({ params, cookies }: LoadEvent) {
-	const postId = params.post_id;
+export async function load({ params, cookies }: ServerLoadEvent) {
+	const postId = params.post_id!;
 	const likedPostsCookie = cookies.get('likedPosts') ?? '[]';
-	let likedPosts: string[] = [];
+	let likedPosts: string[];
 	try {
 		likedPosts = JSON.parse(likedPostsCookie);
 	} catch {
@@ -40,7 +40,7 @@ export const actions: Actions = {
 			return { success: false, error: 'Missing post ID' };
 		}
 		const likedPostsCookie = cookies.get('likedPosts') ?? '[]';
-		let likedPosts: string[] = [];
+		let likedPosts: string[];
 		try {
 			likedPosts = JSON.parse(likedPostsCookie);
 		} catch {
@@ -55,9 +55,7 @@ export const actions: Actions = {
 		}
 		cookies.set('likedPosts', JSON.stringify(likedPosts), {
 			path: '/',
-			httpOnly: true,
-			sameSite: 'lax',
-			maxAge: 60 * 60 * 24 * 365 // 1 year
+			
 		});
 		return { success: true };
 	}
