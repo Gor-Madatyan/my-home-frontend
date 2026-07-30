@@ -1,6 +1,20 @@
 <script lang="ts">
 	import { enhance } from "$app/forms";
 	import { marked } from 'marked';
+	import { markedHighlight } from 'marked-highlight';
+	import hljs from 'highlight.js';
+	import 'highlight.js/styles/github-dark.css';
+
+	// Configure marked with highlight.js
+	marked.use(markedHighlight({
+		langPrefix: 'hljs language-',
+		highlight(code, lang) {
+			if (lang && hljs.getLanguage(lang)) {
+				return hljs.highlight(code, { language: lang }).value;
+			}
+			return hljs.highlightAuto(code).value;
+		}
+	}));
 
 	interface Post {
 		post_id: number;
