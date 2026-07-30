@@ -100,7 +100,7 @@
                 </div>
             {/if}
             <p class="text-gray-300 mb-6">{data.post.summary}</p>
-            <div class="prose prose-invert max-w-none">
+            <div class="prose prose-invert max-w-none prose-code:before:content-none prose-code:after:content-none">
 
                 <!-- eslint-disable-next-line svelte/no-at-html-tags -->
                 {@html renderedBody}
