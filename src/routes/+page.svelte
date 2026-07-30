@@ -59,7 +59,9 @@
 		<ul>
 			{#each data.posts as post (post.post_id)}
 				<li class="mb-2">
-					<BlogPostCard {post} />
+					<a href={resolve(`/post/${post.post_id}`)} class="block no-underline">
+						<BlogPostCard {post} />
+					</a>
 				</li>
 			{/each}
 		</ul>
