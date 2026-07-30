@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { enhance } from "$app/forms";
-
+	import { marked } from 'marked';
 
 	interface Post {
 		post_id: number;
@@ -18,6 +18,8 @@
 	// local state for likes so we can update it without mutating props
 	let likes = $derived(data.post?.likes ?? 0);
 	let liked = $derived(data.isLiked ?? false);
+
+	let renderedBody = $derived(data.post ? marked(data.post.body) : '');
 
 	function formatDate(dateString: string): string {
 		return dateString.split(' ')[0];
@@ -69,7 +71,7 @@
 			{/if}
 			<p class="text-gray-300 mb-6">{data.post.summary}</p>
 			<div class="prose prose-invert max-w-none">
-				{data.post.body}
+				{@html renderedBody}
 			</div>
 		</article>
 	{:else}
