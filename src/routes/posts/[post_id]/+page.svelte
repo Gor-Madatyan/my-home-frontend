@@ -40,7 +40,7 @@
 				<span>Uploaded: {formatDate(data.post.upload_date)}</span>
 				<span class="ml-4">Revised: {formatDate(data.post.revision_date)}</span>
 				<button
-					class="ml-4 flex items-center gap-2 rounded-md border border-gray-500/50 bg-neutral-800 px-3 py-1.5 text-base hover:bg-gray-700 active:scale-95 hover:text-red-400 transition-colors"
+					class="ml-auto flex items-center gap-2 rounded-md border border-gray-500/50 bg-neutral-800 px-3 py-1.5 text-base hover:bg-gray-700 active:scale-95 hover:text-red-400 transition-colors"
 					onclick={handleLike}
 				>
 					❤️
