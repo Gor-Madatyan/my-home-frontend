@@ -15,7 +15,8 @@ function getLikedPosts(cookies: Cookies): Set<string> {
 // Helper to save liked posts back to cookies
 function saveLikedPosts(cookies: Cookies, likedPosts: Set<string>): void {
 	cookies.set('likedPosts', JSON.stringify([...likedPosts]), {
-		path: '/posts'
+		path: '/posts',
+		maxAge: 60 * 60 * 24 * 365 // 1 year in seconds
 	});
 }
 

@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { enhance } from "$app/forms";
+
 
 	interface Post {
 		post_id: number;
@@ -38,6 +40,7 @@
 				<span class="ml-4">Revised: {formatDate(data.post.revision_date)}</span>
 				<form
 					method="POST"
+					use:enhance
 					action="?/toggleLike"
 					onsubmit={() => optimisticLike()}
 					class="ml-auto"
