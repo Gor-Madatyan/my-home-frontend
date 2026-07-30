@@ -1,5 +1,7 @@
 import axios from 'axios';
 
+export const api_base_url = "localhost:8080"
+
 export async function load_citations(page: number,author?:string, source?:string) {
 	try {
 		const response = await axios.get(
