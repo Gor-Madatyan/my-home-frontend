@@ -97,7 +97,15 @@
         try {
             const response = await axios.get(requestUrl);
             const data = response.data;
-            const posts = (data.posts || []).map((item: any) => ({
+            const posts = (data.posts || []).map((item: {
+                post_id: number,
+                title: string,
+                summary: string,
+                upload_date: string,
+                revision_date: string,
+                likes: number,
+
+            }) => ({
                 post_id: item.post_id,
                 title: item.title,
                 summary: item.summary,
@@ -135,7 +143,8 @@
             />
             {#if showSuggestions}
                 <ul class="absolute z-10 bg-neutral-900 border border-white/10 mt-1 w-full max-h-40 overflow-y-auto text-sm text-white">
-                    {#each tagSuggestions as suggestion}
+                    {#each tagSuggestions as suggestion (suggestion.tag_id)}
+                        <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
                         <li
                             class="px-3 py-2 cursor-pointer hover:bg-white/10"
                             onmousedown={() => selectSuggestion(suggestion.tag_name)}
