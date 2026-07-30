@@ -27,6 +27,17 @@
 		liked = !liked;
 		likes = liked ? likes + 1 : likes - 1;
 	}
+
+	function handleEnhance() {
+		return async ({ result }: { result: any }) => {
+			if (result.type === 'success') {
+				const data = result.data;
+				if (data?.likes !== undefined) {
+					likes = data.likes;
+				}
+			}
+		};
+	}
 </script>
 
 <div class="min-h-screen bg-black text-white p-6 md:p-8">
@@ -39,7 +50,7 @@
 				<form
 					method="POST"
 					action="?/toggleLike"
-					use:enhance
+					use:enhance={handleEnhance}
 					onsubmit={() => optimisticLike()}
 					class="ml-auto"
 				>

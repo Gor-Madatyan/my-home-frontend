@@ -54,15 +54,27 @@ export const actions = {
 		}
 
 		const likedPosts = getLikedPosts(cookies);
+		const currentlyLiked = likedPosts.has(postId);
 
-		// Set.delete() and Set.add() inherently prevent structural duplicates
-		if (likedPosts.has(postId)) {
-			likedPosts.delete(postId);
-		} else {
-			likedPosts.add(postId);
+		try {
+			const endpoint = currentlyLiked
+				? `http://localhost:8080/posts/${postId}/unlike`
+				: `http://localhost:8080/posts/${postId}/like`;
+			const response = await axios.post(endpoint);
+			const newLikes = response.data?.likes ?? 0;
+
+			// Update cookie based on server response (or toggle as before)
+			if (currentlyLiked) {
+				likedPosts.delete(postId);
+			} else {
+				likedPosts.add(postId);
+			}
+			saveLikedPosts(cookies, likedPosts);
+
+			return { success: true, likes: newLikes };
+		} catch (error) {
+			console.error('Failed to toggle like:', error);
+			return { success: false, error: 'Failed to update like' };
 		}
-
-		saveLikedPosts(cookies, likedPosts);
-		return { success: true };
 	}
 };
