@@ -5,21 +5,19 @@
 	import hljs from 'highlight.js';
 	import 'highlight.js/styles/github-dark.css';
 
-	// Configure marked with highlight.js and html in one call
-	marked.use({
-		html: true,
-		extensions: [
-			markedHighlight({
-				langPrefix: 'hljs language-',
-				highlight(code, lang) {
-					if (lang && hljs.getLanguage(lang)) {
-						return hljs.highlight(code, { language: lang }).value;
-					}
-					return hljs.highlightAuto(code).value;
+	// Configure marked with highlight.js and html
+	marked.use(
+		{ html: true },
+		markedHighlight({
+			langPrefix: 'hljs language-',
+			highlight(code, lang) {
+				if (lang && hljs.getLanguage(lang)) {
+					return hljs.highlight(code, { language: lang }).value;
 				}
-			})
-		]
-	});
+				return hljs.highlightAuto(code).value;
+			}
+		})
+	);
 
 	interface Post {
 		post_id: number;
