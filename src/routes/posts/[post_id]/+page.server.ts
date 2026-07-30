@@ -60,8 +60,6 @@ export const actions = {
 			const endpoint = currentlyLiked
 				? `http://localhost:8080/posts/${postId}/unlike`
 				: `http://localhost:8080/posts/${postId}/like`;
-			const response = await axios.put(endpoint);
-			const newLikes = response.data?.likes ?? 0;
 
 			// Update cookie based on server response (or toggle as before)
 			if (currentlyLiked) {
@@ -70,8 +68,9 @@ export const actions = {
 				likedPosts.add(postId);
 			}
 			saveLikedPosts(cookies, likedPosts);
+			await axios.put(endpoint);
 
-			return { success: true, likes: newLikes };
+			return { success: true };
 		} catch (error) {
 			console.error('Failed to toggle like:', error);
 			return { success: false, error: 'Failed to update like' };

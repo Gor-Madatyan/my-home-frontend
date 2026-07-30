@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { enhance } from '$app/forms';
 
 	interface Post {
 		post_id: number;
@@ -15,8 +14,8 @@
 	let { data }: { data: { post: Post | null; isLiked: boolean } } = $props();
 
 	// local state for likes so we can update it without mutating props
-	let likes = $state(data.post?.likes ?? 0);
-	let liked = $state(data.isLiked ?? false);
+	let likes = $derived(data.post?.likes ?? 0);
+	let liked = $derived(data.isLiked ?? false);
 
 	function formatDate(dateString: string): string {
 		return dateString.split(' ')[0];
@@ -28,16 +27,6 @@
 		likes = liked ? likes + 1 : likes - 1;
 	}
 
-	function handleEnhance() {
-		return async ({ result }: { result: any }) => {
-			if (result.type === 'success') {
-				const data = result.data;
-				if (data?.likes !== undefined) {
-					likes = data.likes;
-				}
-			}
-		};
-	}
 </script>
 
 <div class="min-h-screen bg-black text-white p-6 md:p-8">
@@ -50,11 +39,10 @@
 				<form
 					method="POST"
 					action="?/toggleLike"
-					use:enhance={handleEnhance}
 					onsubmit={() => optimisticLike()}
 					class="ml-auto"
 				>
-					<input type="hidden" name="postId" value={data.post?.post_id} />
+					<input type="hidden" name="postId" value={[data.post?.post_id]} />
 					<button
 						type="submit"
 						class="flex items-center gap-2 rounded-md border border-gray-500/50 bg-neutral-800 px-3 py-1.5 text-base hover:bg-gray-700 active:scale-95 hover:text-red-400 transition-colors"
