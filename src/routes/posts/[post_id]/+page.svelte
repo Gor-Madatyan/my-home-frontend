@@ -16,6 +16,9 @@
 		}
 	}));
 
+	// Enable HTML output
+	marked.use({ html: true });
+
 	interface Post {
 		post_id: number;
 		title: string;
