@@ -24,8 +24,7 @@
 
     async function search() {
         currentSearch = searchInput;
-        const tagsRaw = tagInput.split(',').map(t => t.trim()).filter(t => t);
-        currentTags = tagsRaw;
+        currentTags = tagInput.split(',').map(t => t.trim()).filter(t => t);
         page = 0;
         const result = await fetchPosts(0, currentSearch || undefined, currentTags.length ? currentTags : undefined);
         posts = result.posts;
