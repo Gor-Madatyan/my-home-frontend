@@ -122,7 +122,7 @@
 </script>
 
 <div class="flex flex-col min-h-screen bg-black text-white p-6 md:p-8">
-    <h2 class="text-2xl font-bold mb-6">Posts</h2>
+    <h2 class="text-2xl font-bold mb-6">Posts 🙉</h2>
 
     <!-- search inputs -->
     <div class="flex flex-col sm:flex-row gap-4 mb-8">
