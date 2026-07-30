@@ -22,7 +22,8 @@
 		<article class="max-w-3xl mx-auto">
 			<h1 class="text-3xl font-bold mb-4">{data.post.title}</h1>
 			<div class="flex items-center text-sm text-gray-400 mb-6">
-				<span>Revised: {formatDate(data.post.revision_date)}</span>
+				<span>Uploaded: {formatDate(data.post.upload_date)}</span>
+				<span class="ml-4">Revised: {formatDate(data.post.revision_date)}</span>
 				<span class="ml-4">{data.post.likes} likes</span>
 			</div>
 			{#if data.post.tags.length}
