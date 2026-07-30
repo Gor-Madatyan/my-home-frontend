@@ -134,7 +134,7 @@
                 class="bg-neutral-800 border border-white/20 px-3 py-2 text-sm text-white focus:outline-none w-full"
             />
             {#if showSuggestions}
-                <ul class="absolute z-10 bg-neutral-800 border border-white/20 mt-1 w-full max-h-40 overflow-y-auto text-sm text-white">
+                <ul class="absolute z-10 bg-neutral-900 border border-white/10 mt-1 w-full max-h-40 overflow-y-auto text-sm text-white">
                     {#each tagSuggestions as suggestion}
                         <li
                             class="px-3 py-2 cursor-pointer hover:bg-white/10"
