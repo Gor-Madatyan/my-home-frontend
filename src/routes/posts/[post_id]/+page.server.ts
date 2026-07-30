@@ -60,7 +60,7 @@ export const actions = {
 			const endpoint = currentlyLiked
 				? `http://localhost:8080/posts/${postId}/unlike`
 				: `http://localhost:8080/posts/${postId}/like`;
-			const response = await axios.post(endpoint);
+			const response = await axios.put(endpoint);
 			const newLikes = response.data?.likes ?? 0;
 
 			// Update cookie based on server response (or toggle as before)
