@@ -52,7 +52,7 @@
 
 	<!-- Sidebar with recent posts -->
 	<aside
-		class="w-full md:w-64 lg:w-72 p-6 bg-neutral-800 border-t md:border-t-0 md:border-l border-white/20"
+		class="w-full md:w-80 lg:w-96 p-4 bg-neutral-800 border-t md:border-t-0 md:border-l border-white/20"
 		aria-label="Recent posts"
 	>
 		<h3 class="text-lg font-bold mb-4">Recent Posts</h3>
