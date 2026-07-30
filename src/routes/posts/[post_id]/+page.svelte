@@ -27,7 +27,7 @@
 			</div>
 			{#if data.post.tags.length}
 				<div class="flex flex-wrap gap-2 mb-6">
-					{#each data.post.tags as tag}
+					{#each data.post.tags as tag (tag)}
 						<span class="bg-neutral-700 text-xs px-2 py-1 rounded">{tag}</span>
 					{/each}
 				</div>

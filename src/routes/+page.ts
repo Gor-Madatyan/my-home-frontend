@@ -2,7 +2,7 @@ import axios from 'axios';
 
 export async function load() {
 	try {
-		const response = await axios.get('http://localhost:8080/posts');
+		const response = await axios.get('http://localhost:8080/posts?page_size=5&page=0');
 		const data = response.data;
 		const posts = (data.posts || []).map(
 			(item: {

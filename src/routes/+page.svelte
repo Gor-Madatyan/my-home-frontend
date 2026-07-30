@@ -59,7 +59,7 @@
 		<ul>
 			{#each data.posts as post (post.post_id)}
 				<li class="mb-2">
-					<a href={resolve(`/post/${post.post_id}`)} class="block no-underline">
+					<a href={resolve(`/posts/${post.post_id}`)} class="block no-underline">
 						<BlogPostCard {post} />
 					</a>
 				</li>
