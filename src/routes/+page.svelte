@@ -57,7 +57,7 @@
 	>
 		<h3 class="text-lg font-bold mb-4">Recent Posts</h3>
 		<ul>
-			{#each data.posts as post}
+			{#each data.posts as post (post.post_id)}
 				<li class="mb-2">
 					<BlogPostCard {post} />
 				</li>
