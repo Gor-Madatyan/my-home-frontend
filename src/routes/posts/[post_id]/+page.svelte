@@ -1,5 +1,5 @@
 <script lang="ts">
-	import axios from 'axios';
+	import { enhance } from '$app/forms';
 
 	interface Post {
 		post_id: number;
@@ -12,23 +12,20 @@
 		likes: number;
 	}
 
-	let { data }: { data: { post: Post | null } } = $props();
+	let { data }: { data: { post: Post | null; isLiked: boolean } } = $props();
 
 	// local state for likes so we can update it without mutating props
 	let likes = $state(data.post?.likes ?? 0);
+	let liked = $state(data.isLiked ?? false);
 
 	function formatDate(dateString: string): string {
 		return dateString.split(' ')[0];
 	}
 
-	async function handleLike() {
-		if (!data.post) return;
-		try {
-			await axios.put(`http://localhost:8080/posts/${data.post.post_id}/like`);
-			likes += 1;
-		} catch (e) {
-			console.error('Failed to like post:', e);
-		}
+	// optimistic UI update before form submission
+	function optimisticLike() {
+		liked = !liked;
+		likes = liked ? likes + 1 : likes - 1;
 	}
 </script>
 
@@ -39,13 +36,27 @@
 			<div class="flex items-center text-sm text-gray-400 mb-6">
 				<span>Uploaded: {formatDate(data.post.upload_date)}</span>
 				<span class="ml-4">Revised: {formatDate(data.post.revision_date)}</span>
-				<button
-					class="ml-auto flex items-center gap-2 rounded-md border border-gray-500/50 bg-neutral-800 px-3 py-1.5 text-base hover:bg-gray-700 active:scale-95 hover:text-red-400 transition-colors"
-					onclick={handleLike}
+				<form
+					method="POST"
+					action="?/toggleLike"
+					use:enhance
+					onsubmit={() => optimisticLike()}
+					class="ml-auto"
 				>
-					❤️
-					<span>{likes}</span>
-				</button>
+					<input type="hidden" name="postId" value={data.post?.post_id} />
+					<button
+						type="submit"
+						class="flex items-center gap-2 rounded-md border border-gray-500/50 bg-neutral-800 px-3 py-1.5 text-base hover:bg-gray-700 active:scale-95 hover:text-red-400 transition-colors"
+						aria-label="Like post"
+					>
+						{#if liked}
+							❤️
+						{:else}
+							🤍
+						{/if}
+						<span>{likes}</span>
+					</button>
+				</form>
 			</div>
 			{#if data.post.tags.length}
 				<div class="flex flex-wrap gap-2 mb-6">
