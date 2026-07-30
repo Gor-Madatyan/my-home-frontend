@@ -17,6 +17,9 @@
 </script>
 <script>
 	import {resolve} from "$app/paths";
+	import BlogPostCard from '$lib/assets/BlogPostCard.svelte';
+
+	let { data } = $props();
 </script>
 
 <div class="flex flex-col md:flex-row min-h-screen bg-black text-white">
@@ -54,10 +57,11 @@
 	>
 		<h3 class="text-lg font-bold mb-4">Recent Posts</h3>
 		<ul>
-			<!-- Placeholder list items for future entries -->
-			<li class="mb-2"><a href="#placeholder" class="hover:underline">Post Title One</a></li>
-			<li class="mb-2"><a href="#placeholder" class="hover:underline">Post Title Two</a></li>
-			<li class="mb-2"><a href="#placeholder" class="hover:underline">Post Title Three</a></li>
+			{#each data.posts as post}
+				<li class="mb-2">
+					<BlogPostCard {post} />
+				</li>
+			{/each}
 		</ul>
 	</aside>
 </div>
