@@ -23,6 +23,46 @@
     let currentSearch = $state('');
     let currentTags: string[] = $state([]);
 
+    // tag suggestion state
+    let tagSuggestions = $state<{tag_name: string; tag_id: number}[]>([]);
+    let showSuggestions = $state(false);
+    let debounceTimer: ReturnType<typeof setTimeout>;
+
+    async function fetchTagSuggestions(query: string) {
+        if (query.length < 2) {
+            tagSuggestions = [];
+            showSuggestions = false;
+            return;
+        }
+        try {
+            const res = await axios.get(`http://localhost:8080/tags?q=${encodeURIComponent(query)}`);
+            tagSuggestions = res.data.tags || [];
+            showSuggestions = tagSuggestions.length > 0;
+        } catch {
+            tagSuggestions = [];
+            showSuggestions = false;
+        }
+    }
+
+    function onTagInput() {
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(() => {
+            const lastTag = tagInput.split(',').pop()?.trim() || '';
+            fetchTagSuggestions(lastTag);
+        }, 300);
+    }
+
+    function selectSuggestion(tagName: string) {
+        const parts = tagInput.split(',');
+        parts[parts.length - 1] = tagName;
+        tagInput = parts.join(',') + ',';
+        showSuggestions = false;
+    }
+
+    function closeSuggestions() {
+        showSuggestions = false;
+    }
+
     async function search() {
         currentSearch = searchInput;
         currentTags = tagInput.split(',').map(t => t.trim()).filter(t => t);
@@ -84,12 +124,28 @@
             bind:value={searchInput}
             class="bg-neutral-800 border border-white/20 px-3 py-2 text-sm text-white focus:outline-none"
         />
-        <input
-            type="text"
-            placeholder="Tags (comma separated)"
-            bind:value={tagInput}
-            class="bg-neutral-800 border border-white/20 px-3 py-2 text-sm text-white focus:outline-none"
-        />
+        <div class="relative">
+            <input
+                type="text"
+                placeholder="Tags (comma separated)"
+                bind:value={tagInput}
+                oninput={onTagInput}
+                onblur={() => setTimeout(() => closeSuggestions(), 200)}
+                class="bg-neutral-800 border border-white/20 px-3 py-2 text-sm text-white focus:outline-none w-full"
+            />
+            {#if showSuggestions}
+                <ul class="absolute z-10 bg-neutral-800 border border-white/20 mt-1 w-full max-h-40 overflow-y-auto text-sm text-white">
+                    {#each tagSuggestions as suggestion}
+                        <li
+                            class="px-3 py-2 cursor-pointer hover:bg-white/10"
+                            onmousedown={() => selectSuggestion(suggestion.tag_name)}
+                        >
+                            {suggestion.tag_name}
+                        </li>
+                    {/each}
+                </ul>
+            {/if}
+        </div>
         <button
             onclick={search}
             class="border border-white/20 px-4 py-2 text-sm hover:bg-white/10 transition-colors"
