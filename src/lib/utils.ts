@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export const api_base_url = "http://localhost:8080";
+export const api_base_url = "/api";
 
 export async function load_citations(page: number,author?:string, source?:string) {
 	try {

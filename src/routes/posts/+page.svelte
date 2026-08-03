@@ -35,7 +35,7 @@
             return;
         }
         try {
-            const res = await axios.get(`http://localhost:8080/tags?q=${encodeURIComponent(query)}`);
+            const res = await axios.get(`/api/tags?q=${encodeURIComponent(query)}`);
             tagSuggestions = res.data.tags || [];
             showSuggestions = tagSuggestions.length > 0;
         } catch {
@@ -85,7 +85,7 @@
 
     async function fetchPosts(pageNum: number, search?: string, tags?: string[]) {
         const pageSize = 10;
-        let requestUrl = `http://localhost:8080/posts?page_size=${pageSize}&page=${pageNum}`;
+        let requestUrl = `/api/posts?page_size=${pageSize}&page=${pageNum}`;
         if (search) {
             requestUrl += `&search=${encodeURIComponent(search)}`;
         }
