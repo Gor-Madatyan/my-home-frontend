@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { api_base_url } from '$lib/utils';
+import { dev } from '$app/environment';
 import type { ServerLoadEvent, Cookies, RequestEvent } from '@sveltejs/kit';
 
 // Helper to get unique liked posts as a Set, automatically stripping data duplicates
@@ -17,7 +18,8 @@ function getLikedPosts(cookies: Cookies): Set<string> {
 function saveLikedPosts(cookies: Cookies, likedPosts: Set<string>): void {
 	cookies.set('likedPosts', JSON.stringify([...likedPosts]), {
 		path: '/posts',
-		maxAge: 60 * 60 * 24 * 365 // 1 year in seconds
+		maxAge: 60 * 60 * 24 * 365, // 1 year in seconds
+		secure: !dev
 	});
 }
 
