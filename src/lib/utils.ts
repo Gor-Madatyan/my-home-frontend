@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export const api_base_url = "http://gor/api";
+export const api_base_url = "/";
 
 export async function load_citations(page: number,author?:string, source?:string) {
 	try {

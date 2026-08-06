@@ -12,7 +12,7 @@
 		<!-- Profile photo: wrapper handles float & dimensions, image fills it -->
 		<div class="float-left mr-6 mb-2 w-64 h-48 shrink-0 overflow-hidden rounded-lg">
 			<img
-					src="/me.png"
+					src="/assets/gor.jpg"
 					alt="Gor Madatyan"
 					class="w-full h-full object-cover"
 					width="959"
