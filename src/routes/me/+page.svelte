@@ -10,13 +10,11 @@
 	<!-- Image and text wrapper with clearfix for float -->
 	<div class="clearfix mb-8">
 		<!-- Profile photo: wrapper handles float & dimensions, image fills it -->
-		<div class="float-left mr-6 mb-0.5 w-64 h-48 shrink-0 overflow-hidden rounded-lg">
+		<div class="float-left mr-6 mb-2 w-64 h-60 shrink-0 overflow-hidden rounded-lg">
 			<img
 					src="https://gormadatyan.xyz/assets/gor.jpg"
 					alt="Gor Madatyan"
 					class="w-full h-full object-cover"
-					width="959"
-					height="1280"
 			/>
 		</div>
 
