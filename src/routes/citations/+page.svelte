@@ -1,11 +1,41 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
 	import Citation from '$lib/Citation.svelte';
-	import { load_citations } from '$lib/utils';
+	import { get_cached } from '$lib/cache';
+	import { CACHE_KEYS } from '$lib/cacheKeys';
+	import { fetch_citations_strict, load_citations, site_url } from '$lib/utils';
+	import Seo from '$lib/Seo.svelte';
 
 	let { data } = $props();
-	let page = $derived(data.page);
-	let citations = $derived(data.citations);
-	let hasMore = $derived(data.citations.length > 0);
+
+	interface Citation {
+		citation_id: number;
+		author: string;
+		rizz: number;
+		source: string;
+		body: string;
+	}
+
+	// svelte-ignore state_referenced_locally
+	let page = $state(data.page ?? 0);
+	// svelte-ignore state_referenced_locally
+	let citations = $state((data.citations as Citation[]) ?? []);
+	// svelte-ignore state_referenced_locally
+	let hasMore = $state(citations.length > 0);
+
+	onMount(async () => {
+		const result = await get_cached(
+			CACHE_KEYS.citations,
+			() => fetch_citations_strict(0),
+			{ citations: [] },
+			(fresh) => {
+				citations = fresh.citations;
+			}
+		);
+		citations = result.citations;
+		hasMore = result.citations.length > 0;
+		page = 0;
+	});
 
 	let authorInput = $state('');
 	let sourceInput = $state('');
@@ -24,7 +54,11 @@
 
 	async function loadMore() {
 		const nextPage = page + 1;
-		const result = await load_citations(nextPage, currentAuthor || undefined, currentSource || undefined);
+		const result = await load_citations(
+			nextPage,
+			currentAuthor || undefined,
+			currentSource || undefined
+		);
 		if (result.citations.length === 0) {
 			hasMore = false;
 		} else {
@@ -34,38 +68,43 @@
 	}
 </script>
 
-<div class="flex flex-col min-h-screen bg-black text-white p-6 md:p-8">
-	<h2 class="text-2xl font-bold mb-6">some citations to think about 💭</h2>
+<div class="flex min-h-screen flex-col bg-black p-6 text-white md:p-8">
+	<Seo
+		title="Citations"
+		description="A collection of citations and meaningful passages from books that Gor Madatyan has read over the years."
+		url={`${site_url}/citations`}
+	/>
+	<h2 class="mb-6 text-2xl font-bold">some citations to think about 💭</h2>
 
 	<!-- search inputs -->
-	<div class="flex flex-col sm:flex-row gap-4 mb-8">
+	<div class="mb-8 flex flex-col gap-4 sm:flex-row">
 		<input
 			type="text"
 			placeholder="Filter by author"
 			bind:value={authorInput}
-			class="bg-neutral-800 border border-white/20 px-3 py-2 text-sm text-white focus:outline-none"
+			class="border border-white/20 bg-neutral-800 px-3 py-2 text-sm text-white focus:outline-none"
 		/>
 		<input
 			type="text"
 			placeholder="Filter by source"
 			bind:value={sourceInput}
-			class="bg-neutral-800 border border-white/20 px-3 py-2 text-sm text-white focus:outline-none"
+			class="border border-white/20 bg-neutral-800 px-3 py-2 text-sm text-white focus:outline-none"
 		/>
 		<button
 			onclick={search}
-			class="border border-white/20 px-4 py-2 text-sm hover:bg-white/10 transition-colors"
+			class="border border-white/20 px-4 py-2 text-sm transition-colors hover:bg-white/10"
 		>
 			Search
 		</button>
 	</div>
 
 	<!-- Placeholder note -->
-	<div class="border border-white/20 p-4 mb-8 text-sm text-gray-400">
+	<div class="mb-8 border border-white/20 p-4 text-sm text-gray-400">
 		Here are some citations which I want to store so I can keep them somewhere grouped.
 	</div>
 
 	<!-- Citations grid -->
-	<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+	<div class="grid grid-cols-1 gap-4 md:grid-cols-2">
 		{#each citations as citation (citation.citation_id)}
 			<Citation {citation} />
 		{/each}
@@ -74,7 +113,7 @@
 	{#if hasMore}
 		<button
 			onclick={loadMore}
-			class="mt-6 self-center border border-white/20 px-4 py-2 text-sm hover:bg-white/10 transition-colors"
+			class="mt-6 self-center border border-white/20 px-4 py-2 text-sm transition-colors hover:bg-white/10"
 		>
 			Load More
 		</button>

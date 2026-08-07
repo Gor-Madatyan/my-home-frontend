@@ -15,8 +15,8 @@ export default defineConfig({
 			adapter: adapter()
 		})
 	],
-  build: {
-    chunkSizeWarningLimit: 1000 // Increases warning limit to 1000 kB (1 MB)
-  },
+	build: {
+		chunkSizeWarningLimit: 1000 // Increases warning limit to 1000 kB (1 MB)
+	},
 	server: { allowedHosts: ['gor'] }
 });

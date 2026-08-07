@@ -16,9 +16,9 @@
 	}
 </script>
 
-<div class="border border-white/20 p-4 mb-4 bg-neutral-800">
-	<h4 class="font-bold text-sm mb-1">{post.title}</h4>
-	<p class="text-xs text-gray-400 mb-2 line-clamp-3">{post.summary}</p>
+<div class="mb-4 border border-white/20 bg-neutral-800 p-4">
+	<h4 class="mb-1 text-sm font-bold">{post.title}</h4>
+	<p class="mb-2 line-clamp-3 text-xs text-gray-400">{post.summary}</p>
 	<div class="flex justify-between text-xs text-gray-500">
 		<span>Revised: {formatDate(post.revision_date)}</span>
 		<span>{post.likes} likes</span>
